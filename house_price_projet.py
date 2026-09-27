@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Phase 1 — Data Understanding
-df = pd.read_csv('house_price_prediction_practice.csv')
+df = pd.read_csv('data/house_price_prediction_practice.csv')
 
 pd.set_option('display.max_colwidth', None)
 pd.set_option('display.max_rows',None) #afficher tous les lignes
@@ -13,11 +13,17 @@ print(df)
 
 print(f"le nombre de lignes et colonnes :{df.shape}")
 print('-'*50)
-print(df.dtypes)
+print(df.dtypes) # tous les features sont numeric
 print('-'*50)
 print(df.describe())
 print('-'*50)
 print(df.isna().sum())
+df = df.dropna()
+print('-'*50)
+print(df.isna().sum())
+print('-'*50)
+print(f"les doublans : {df.duplicated().sum()}")
+df = df.drop_duplicates()
 print('-'*50)
 print(f"les doublans : {df.duplicated().sum()}")
 print('-'*50)
@@ -35,9 +41,19 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random
 # Phase 4 — Construction du modèle
 
 from sklearn.linear_model import LinearRegression
+import joblib
 model = LinearRegression()
 model.fit(x_train, y_train)
 y_pred = model.predict(x_test)
+
+joblib.dump(model, 'house_price_model.pkl')
+print("Model saved successfully!")
+
+loaded_model = joblib.load('house_price_model.pkl')
+y_pred_loaded = loaded_model.predict(x_test)
+
+print('-'*50)
+
 
 # Phase 5 — Évaluation
 from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score
@@ -50,19 +66,24 @@ R2 = r2_score(y_test, y_pred)
 print("MAE:", MAE)
 print("MSE:", MSE)
 print("RMSE:", RMSE)
-print("R2:", R2)
+print("Original model R2 :", R2)
+print('-'*50)
+print("Loaded model R2 :", r2_score(y_test, y_pred_loaded))
 
 print('-'*50)
 
 # Phase 6 — Visualisation
 # Visualization 1:
-plt.figure(figsize=(8, 5))
-plt.scatter(df['HouseAge'], df['MedHouseVal'], color='red')
-plt.title('HouseAge vs MedHouseVal')
-plt.xlabel('HouseAge')
-plt.ylabel('MedHouseVal')
-plt.grid()
-plt.show()
+
+features = x.columns
+for feature in features:
+    plt.figure(figsize=(8, 5))
+    plt.scatter(df[feature], df['MedHouseVal'])
+    plt.title(f'{feature} vs MedHouseVal')
+    plt.xlabel(feature)
+    plt.ylabel('MedHouseVal')
+    plt.grid()
+    #plt.show()
 
 # # Visualization 2:
 
@@ -82,11 +103,11 @@ plt.xlabel('Actual Price')
 plt.ylabel('Predicted Price')
 
 plt.grid()
-plt.show()
+#plt.show()
 
 #Phase 7 — Model Interpretation
 
-w1 = model.coef_
-w0 = model.intercept_
-print(w1)
-print(w0)
+for feature, coefficient in zip(x.columns, model.coef_):
+    print(f"{feature}: {coefficient}")
+
+print("Intercept:", model.intercept_)
