@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>House Price Prediction</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>House Price Prediction</h1>
+            <p>Machine Learning • Linear Regression</p>
+        </div>
+
+        <form id="predictionForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="MedInc">Median Income</label>
+                    <input type="number" id="MedInc" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="HouseAge">House Age</label>
+                    <input type="number" id="HouseAge" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="AveRooms">Average Rooms</label>
+                    <input type="number" id="AveRooms" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="AveBedrms">Average Bedrooms</label>
+                    <input type="number" id="AveBedrms" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Population">Population</label>
+                    <input type="number" id="Population" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="AveOccup">Average Occupancy</label>
+                    <input type="number" id="AveOccup" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Latitude">Latitude</label>
+                    <input type="number" id="Latitude" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Longitude">Longitude</label>
+                    <input type="number" id="Longitude" step="any" required>
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Predict Price
+            </button>
+
+        </form>
+
+        <div id="result" class="result">
+            <h2>Predicted Price</h2>
+            <p id="predictionValue">---</p>
+        </div>
+
+    </div>
+<script src="/static/script.js"></script>
+
+</body>
+</html>
